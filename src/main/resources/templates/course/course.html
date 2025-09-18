@@ -3,7 +3,9 @@
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
           integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+          integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
     <meta charset="UTF-8">
     <title>Gestión de Cursos</title>
@@ -16,13 +18,25 @@
 
 <div class="container mb-5">
     <div class="container mb-5">
-        <div th:if="${message != null}" th:classappend="${alertClass}" class="alert alert-success alert-dismissible fade show text-center message" th:text="${message}">
+        <div th:if="${message != null}" th:classappend="${alertClass}"
+             class="alert alert-success alert-dismissible fade show text-center message" th:text="${message}">
             <button type="button" class="close btn-sm" data-dismiss="alert" aria-label="Cerrar">
                 <span aria-hidden="true">✖</span>
             </button>
         </div>
 
     </div>
+</div>
+
+<div class="container mb-3 d-grid gap-2 d-md-block">
+    <!--Botón Generar Reporte PDF-->
+    <a th:href="@{/courses/export/pdf}" class="btn btn-danger">
+        <i class="fa-solid fa-file-pdf"></i> Generar PDF
+    </a>
+    <!--Botón Generar Reporte Excel-->
+    <a th:href="@{/courses/export/excel}" class="btn btn-success">
+        <i class="fa-solid fa-file-excel"></i> Generar EXCEL
+    </a>
 </div>
 
 
@@ -49,20 +63,17 @@
                 <a th:if="${course.published == false}" class="fa-regular fa-square icon-dark"></a>
             </td>
             <td>
-                <a th:href="@{/courses/formUpdateCourse/{id}(id=${course.id})}" class="fa-regular fa-pen-to-square icon-dark btn btn-primary" title="Editar"></a>
-                <a th:href="@{/courses/deleteCourse/{id}(id=${course.id})}" class="fa-regular fa-trash-can icon-dark btn btn-danger" id="btnDelete" title="Eliminar"></a>
+                <a th:href="@{/courses/formUpdateCourse/{id}(id=${course.id})}"
+                   class="fa-regular fa-pen-to-square icon-dark btn btn-primary" title="Editar"></a>
+                <a th:href="@{/courses/deleteCourse/{id}(id=${course.id})}"
+                   class="fa-regular fa-trash-can icon-dark btn btn-danger" id="btnDelete" title="Eliminar"></a>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
 
-<!--Botón Generar Reporte PDF-->
-<div class="container mb-3">
-    <a th:href="@{/courses/export/pdf}" class="btn btn-danger">
-        <i class="fa-solid fa-file-pdf"></i> Generar Reporte PDF
-    </a>
-</div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"

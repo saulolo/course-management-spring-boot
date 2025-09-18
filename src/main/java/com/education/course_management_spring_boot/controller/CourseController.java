@@ -2,6 +2,7 @@ package com.education.course_management_spring_boot.controller;
 
 import com.education.course_management_spring_boot.domain.entity.Course;
 import com.education.course_management_spring_boot.service.interfaces.ICourseService;
+import com.education.course_management_spring_boot.util.report.CourseExcelReportGenerator;
 import com.education.course_management_spring_boot.util.report.CoursePdfReportGenerator;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -21,13 +22,14 @@ public class CourseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(CourseController.class);
     private final ICourseService courseService;
     private final CoursePdfReportGenerator pdfGenerator;
+    private final CourseExcelReportGenerator excelGenerator;
 
 
-    public CourseController(ICourseService courseService, CoursePdfReportGenerator pdfGenerator) {
+    public CourseController(ICourseService courseService, CoursePdfReportGenerator pdfGenerator, CourseExcelReportGenerator excelGenerator) {
         this.courseService = courseService;
         this.pdfGenerator = pdfGenerator;
+        this.excelGenerator = excelGenerator;
     }
-
 
     /**
      * Handles GET requests to the /viewCourses endpoint.
@@ -81,7 +83,6 @@ public class CourseController {
         return "redirect:/courses/viewCourses";
     }
 
-
     /**
      * Muestra el formulario para editar un curso.
      * @param id El ID del curso a editar.
@@ -119,6 +120,13 @@ public class CourseController {
     public void pdfReportGenerator(HttpServletResponse response) throws IOException {
         List<Course> courseList = courseService.getAllCourses();
         pdfGenerator.export(courseList, response);
+    }
+
+
+    @GetMapping("/export/excel")
+    public void excelReportGenerator(HttpServletResponse response) throws IOException {
+        List<Course> courseList = courseService.getAllCourses();
+        excelGenerator.export(courseList, response);
     }
 
 }

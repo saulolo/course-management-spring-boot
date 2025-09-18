@@ -14,6 +14,10 @@ import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+
+/**
+ * Genera reportes en formato PDF para cursos.
+ */
 @Component
 public class CoursePdfReportGenerator {
 
@@ -51,7 +55,7 @@ public class CoursePdfReportGenerator {
         pdfCell.setPhrase(new Phrase("Publicado", font));
         pdfPTable.addCell(pdfCell);
 
-        pdfCell.setPhrase(new Phrase("Creado ", font));
+        pdfCell.setPhrase(new Phrase("Creado", font));
         pdfPTable.addCell(pdfCell);
 
         pdfCell.setPhrase(new Phrase("Modificado", font));
