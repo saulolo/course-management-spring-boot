@@ -13,13 +13,20 @@
 <br>
 
 <div class="container-fluid">
-    <h2 class="text-center">[[${pageTitle}]]</h2>
+    <h2 class="text-center" th:text="${pageTitle}"></h2>
 
     <div class="my-3">
         <form th:object="${cou}" th:action="@{/courses/createOrUpdateCourse}" method="post"
               enctype="multipart/form-data" style="max-width: 550px; margin: 0 auto;">
 
             <div class="p-3">
+                <!--Campo id-->
+                <div class="form-group row">
+                    <div class="col-sm-9">
+                        <input class="form-control" type="hidden" id="id" th:field="*{id}">
+                    </div>
+                </div>
+
                 <!--Campo title-->
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label" for="title">Título</label>

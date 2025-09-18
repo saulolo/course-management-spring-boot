@@ -2,12 +2,11 @@ package com.education.course_management_spring_boot.controller;
 
 import com.education.course_management_spring_boot.domain.entity.Course;
 import com.education.course_management_spring_boot.service.interfaces.ICourseService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -17,6 +16,7 @@ import java.util.List;
 public class CourseController {
 
     private final ICourseService courseService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(CourseController.class);
 
     public CourseController(ICourseService courseService) {
         this.courseService = courseService;
@@ -50,14 +50,14 @@ public class CourseController {
      * @param model Objeto de tipo Model de Spring para añadir atributos a la vista.
      * @return El nombre de la plantilla de Thymeleaf, "course/formAddCourse".
      */
-    @GetMapping("/forNewCourse")
+    @GetMapping("/formNewCourse")
     public String showFormAddCourse(Model model) {
-        Course cou = new Course();
-        model.addAttribute("cou", cou);
+        Course course = new Course();
+        model.addAttribute("cou", course);
         model.addAttribute("pageTitle", "Nuevo Curso");
         return "course/formAddCourse";
     }
-    
+
     /**
      * Procesa la petición POST para guardar un curso nuevo o actualizar uno existente.
      * Utiliza @ModelAttribute para recibir los datos del formulario y los guarda a través del servicio.
@@ -71,10 +71,30 @@ public class CourseController {
     public String saveOrUpdateCourse(@ModelAttribute Course course, RedirectAttributes redirectAttributes) {
         try {
             courseService.saveOrUpdateCourse(course);
-            redirectAttributes.addFlashAttribute("message", "El curso ha sido guradado con éxito. \uD83D\uDC4D");
+            redirectAttributes.addFlashAttribute("message", "El curso ha sido guardado con éxito. \uD83D\uDC4D");
+            redirectAttributes.addFlashAttribute("alertClass", "alert-success");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("message", e.getMessage());
+            redirectAttributes.addFlashAttribute("message", "Error al guardar el curso: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+
         }
+        return "redirect:/courses/viewCourses";
+    }
+
+
+    @GetMapping("/formUpdateCourse/{id}")
+    public String showFormUpdateCourse(@PathVariable Long id, Model model) {
+        Course course = courseService.getCourseById(id).orElseThrow(() -> new RuntimeException("Curso no encontrado con ID: " + id));
+        model.addAttribute("pageTitle", "Editar Curso: " + id);
+        model.addAttribute("cou", course);
+        return "course/formAddCourse";
+    }
+
+    @GetMapping("/deleteCourse/{id}")
+    public String deleteCourseById(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        courseService.deleteCourseById(id);
+        redirectAttributes.addFlashAttribute("message", "El curso ha sido eliminado con éxito. \uD83D\uDC4D");
+        LOGGER.info("Curso con ID: {} eliminado con éxito. ✔", id);
         return "redirect:/courses/viewCourses";
     }
 
