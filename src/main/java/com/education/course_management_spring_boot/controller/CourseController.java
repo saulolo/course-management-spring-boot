@@ -43,7 +43,13 @@ public class CourseController {
         return "course/course";
     }
 
-
+    /**
+     * Muestra el formulario para crear un nuevo curso.
+     * Añade un objeto de tipo Course al modelo para ser rellenado por el formulario.
+     *
+     * @param model Objeto de tipo Model de Spring para añadir atributos a la vista.
+     * @return El nombre de la plantilla de Thymeleaf, "course/formAddCourse".
+     */
     @GetMapping("/forNewCourse")
     public String showFormAddCourse(Model model) {
         Course cou = new Course();
@@ -51,7 +57,16 @@ public class CourseController {
         model.addAttribute("pageTitle", "Nuevo Curso");
         return "course/formAddCourse";
     }
-
+    
+    /**
+     * Procesa la petición POST para guardar un curso nuevo o actualizar uno existente.
+     * Utiliza @ModelAttribute para recibir los datos del formulario y los guarda a través del servicio.
+     * Redirige a la página que muestra la lista de cursos con un mensaje de éxito o error.
+     *
+     * @param course             El objeto Course que se recibe del formulario.
+     * @param redirectAttributes Utilizado para añadir mensajes que persistan después de la redirección.
+     * @return La redirección a la página principal de cursos.
+     */
     @PostMapping("/createOrUpdateCourse")
     public String saveOrUpdateCourse(@ModelAttribute Course course, RedirectAttributes redirectAttributes) {
         try {

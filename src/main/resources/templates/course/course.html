@@ -13,7 +13,18 @@
 
 <br>
 
-<div class="container mb-5"></div>
+<div class="container mb-5">
+    <div class="container mb-5">
+        <div th:if="${message != null}" class="alert alert-success alert-dismissible fade show text-center message">
+            [[${message}]]
+            <button type="button" class="close btn-sm" data-dismiss="alert" aria-label="Cerrar">
+                <span aria-hidden="true">✖</span>
+            </button>
+        </div>
+
+    </div>
+</div>
+
 
 
 <div class="container">
