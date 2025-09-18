@@ -100,5 +100,5 @@ public class Course {
     public void setPublished(boolean published) {
         this.published = published;
     }
-    
+
 }
