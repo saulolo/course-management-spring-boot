@@ -2,6 +2,8 @@ package com.education.course_management_spring_boot.controller;
 
 import com.education.course_management_spring_boot.domain.entity.Course;
 import com.education.course_management_spring_boot.service.interfaces.ICourseService;
+import com.education.course_management_spring_boot.util.report.CoursePdfReportGenerator;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -9,17 +11,21 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
 @RequestMapping("/courses")
 public class CourseController {
 
-    private final ICourseService courseService;
     private static final Logger LOGGER = LoggerFactory.getLogger(CourseController.class);
+    private final ICourseService courseService;
+    private final CoursePdfReportGenerator pdfGenerator;
 
-    public CourseController(ICourseService courseService) {
+
+    public CourseController(ICourseService courseService, CoursePdfReportGenerator pdfGenerator) {
         this.courseService = courseService;
+        this.pdfGenerator = pdfGenerator;
     }
 
 
@@ -76,6 +82,12 @@ public class CourseController {
     }
 
 
+    /**
+     * Muestra el formulario para editar un curso.
+     * @param id El ID del curso a editar.
+     * @param model El objeto Model de Spring.
+     * @return El nombre de la plantilla de Thymeleaf para el formulario.
+     */
     @GetMapping("/formUpdateCourse/{id}")
     public String showFormUpdateCourse(@PathVariable Long id, Model model) {
         Course course = courseService.getCourseById(id).orElseThrow(() -> new RuntimeException("Curso no encontrado con ID: " + id));
@@ -84,12 +96,29 @@ public class CourseController {
         return "course/formAddCourse";
     }
 
+    /**
+     * Elimina un curso por su ID.
+     * @param id El ID del curso a eliminar.
+     * @param redirectAttributes Atributos para redirigir con un mensaje.
+     * @return La redirección a la página de la lista de cursos.
+     */
     @GetMapping("/deleteCourse/{id}")
     public String deleteCourseById(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         courseService.deleteCourseById(id);
         redirectAttributes.addFlashAttribute("message", "El curso ha sido eliminado con éxito. \uD83D\uDC4D");
         LOGGER.info("Curso con ID: {} eliminado con éxito. ✔", id);
         return "redirect:/courses/viewCourses";
+    }
+
+    /**
+     * Genera y exporta un reporte en PDF de todos los cursos.
+     * @param response La respuesta HTTP para enviar el archivo.
+     * @throws IOException Si ocurre un error de E/S.
+     */
+    @GetMapping("/export/pdf")
+    public void pdfReportGenerator(HttpServletResponse response) throws IOException {
+        List<Course> courseList = courseService.getAllCourses();
+        pdfGenerator.export(courseList, response);
     }
 
 }

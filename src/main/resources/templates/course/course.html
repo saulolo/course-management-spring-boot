@@ -26,7 +26,6 @@
 </div>
 
 
-
 <div class="container">
     <table class="table table-hover table-responsive-xl">
         <thead class="thead-light">
@@ -56,6 +55,13 @@
         </tr>
         </tbody>
     </table>
+</div>
+
+<!--Botón Generar Reporte PDF-->
+<div class="container mb-3">
+    <a th:href="@{/courses/export/pdf}" class="btn btn-danger">
+        <i class="fa-solid fa-file-pdf"></i> Generar Reporte PDF
+    </a>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
