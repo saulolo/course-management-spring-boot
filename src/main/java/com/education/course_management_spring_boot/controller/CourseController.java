@@ -23,12 +23,6 @@ public class CourseController {
     }
 
 
-/*    @GetMapping
-    public String home() {
-        return "redirect:/course";
-    }*/
-
-
     /**
      * Handles GET requests to the /viewCourses endpoint.
      * Retrieves a list of all courses and adds them to the model for display.
