@@ -3,10 +3,6 @@ package com.education.course_management_spring_boot.domain.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "courses")
@@ -26,18 +22,17 @@ public class Course {
     @Column(nullable = false)
     int level;
 
-
     @Column(name = "is_published")
-    boolean isPublished;
+    boolean published;
 
     public Course() {
     }
 
-    public Course(String title, String description, int level, boolean isPublished) {
+    public Course(String title, String description, int level, boolean published) {
         this.title = title;
         this.description = description;
         this.level = level;
-        this.isPublished = isPublished;
+        this.published = published;
     }
 
     public Long getId() {
@@ -73,11 +68,11 @@ public class Course {
     }
 
     public boolean isPublished() {
-        return isPublished;
+        return published;
     }
 
     public void setPublished(boolean published) {
-        isPublished = published;
+        this.published = published;
     }
 
     /*

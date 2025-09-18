@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <meta charset="UTF-8">
+    <title>Formulario para agregar Cursos</title>
+</head>
+<body>
+
+<div class="container" th:replace="~{fragments/header::header}"></div>
+<br>
+
+<div class="container-fluid">
+    <h2 class="text-center">[[${pageTitle}]]</h2>
+
+    <div class="my-3">
+        <form th:object="${cou}" th:action="@{/courses/createOrUpdateCourse}" method="post"
+              enctype="multipart/form-data" style="max-width: 550px; margin: 0 auto;">
+
+            <div class="p-3">
+                <!--Campo title-->
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" for="title">Título</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="text" id="title" th:field="*{title}" placeholder="Ingrese el título" required minlength="2" maxlength="120">
+                    </div>
+                </div>
+
+                <!--Campo description-->
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" for="description">Descripción</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="text" id="description" th:field="*{description}" placeholder="Ingrese una descripción" required minlength="5" maxlength="256">
+                    </div>
+                </div>
+
+                <!--Campo level-->
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" for="level">Nivel</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="number" id="level" th:field="*{level}" min="2" required>
+                    </div>
+                </div>
+
+                <!--Campo isPublished-->
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" for="isPublished">Publicado: </label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="checkbox" id="isPublished" th:field="*{published}">
+                    </div>
+                </div>
+
+                <!--Botón-->
+                <div class="text-center">
+                    <input class="btn btn-primary btn-sm mr-2" type="submit" value="Guardar"/>
+                    <input class="btn btn-secondary btn-sm" type="button" value="Cancelar" id="btnCancelar"/>
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnCancelar").on("click", function () {
+            window.location="[[@{/courses}]]";
+        });
+    });
+</script>
+
+</body>
+</html>
