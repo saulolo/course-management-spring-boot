@@ -3,6 +3,10 @@ package com.education.course_management_spring_boot.domain.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "courses")
@@ -25,14 +29,36 @@ public class Course {
     @Column(name = "is_published")
     boolean published;
 
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
+    LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    LocalDateTime updatedAt;
+
     public Course() {
     }
 
-    public Course(String title, String description, int level, boolean published) {
+    public Course(Long id, String title, String description, int level, boolean published, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.level = level;
         this.published = published;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    private void beforePersisting() {
+        this.createdAt = LocalDateTime.now();
+    }
+
+
+    @PreUpdate
+    private void modificationDate() {
+        this.updatedAt = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -74,15 +100,5 @@ public class Course {
     public void setPublished(boolean published) {
         this.published = published;
     }
-
-    /*
-    @CreatedDate
-    @Column(name = "created_at", updatable = false)
-    LocalDate createdAt;
-
-    @LastModifiedDate
-    @Column(name = "updated_at")
-    LocalDate updatedAt;
-*/
-
+    
 }
